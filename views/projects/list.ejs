@@ -1,0 +1,148 @@
+<% include ../partial/header.ejs %>
+    <div style="padding-top: 80px; padding-left: 40px;padding-right: 40px;">
+        <h1>Projects</h1>
+        <hr>
+        <h3>Filters</h3>
+        <div style="padding-left: 100px;padding-right: 100px;">
+            <form id="form-filter">
+                <div class="containerCheck">
+                    <label for="idCheckFilter" style="width: 150px;"><input class="form-check-input" type="checkbox"
+                            id="idCheckFilter" name="idCheckFilter" value="idCheckFilter" <%=option.idCheckFilter
+                            ? "checked" :"" %>> ID</label>
+                    <input class="form-control" type="number" id="idFilter" name="idFilter" placeholder="ID"
+                        value=<%=option.idFilter %>>
+                </div>
+                <div class="containerCheck">
+                    <label for="nameCheckFilter" style="width: 150px;"><input class="form-check-input" type="checkbox"
+                            id="nameCheckFilter" name="nameCheckFilter" value="nameCheckFilter"
+                            <%=option.nameCheckFilter ? "checked" :""%>> Name</label>
+                    <input class="form-control" type="text" id="nameFilter" name="nameFilter" placeholder="Name"
+                        value="<%=option.nameFilter %>">
+                </div>
+                <div class="containerCheck">
+                    <label for="memberCheckFilter" style="width: 168px;"><input class="form-check-input" type="checkbox"
+                            id="memberCheckFilter" name="memberCheckFilter" value="memberCheckFilter"
+                            <%=option.memberCheckFilter ? "checked" :"" %>> Member</label>
+                    <select class="form-control" id="memberFilter" name="memberFilter">
+                        <option value="" disabled selected>Choose the member ...</option>
+                        <% members.forEach((item, index)=>{ %>
+                            <option value="<%= item.firstname %>" <%=option.memberFilter==`${item.firstname}`
+                                ? "selected" : "" %>>
+                                <%= item.firstname %>
+                            </option>
+                            <% }) %>
+                    </select>
+                </div>
+                <p></p>
+                <button type="submit" class="btn btn-primary" id="search"><i class="fas fa-search"></i> Search</button>
+                <a class="btn btn-secondary" id="resetFilter" href="/projects"><i class="fas fa-times"></i> Reset</a>
+            </form>
+        </div>
+        <br>
+        <h3>Options</h3>
+        <form action="/projects/saveoption" method="post">
+            <div class="row">
+                <div class="col-md-2">
+                    <p>Columns</p>
+                </div>
+                <div class="col-md-2">
+                    <div><input class="form-check-input" type="checkbox" id="idOption" name="idOption"
+                            <%=setting.idOption=='on' ? "checked" : "" %> > ID</input></div>
+                    <div><input class="form-check-input" type="checkbox" id="nameOption" name="nameOption"
+                            <%=setting.nameOption=='on' ? "checked" : "" %>> Name</input>
+                    </div>
+                    <div><input class="form-check-input" type="checkbox" id="memberOption" name="memberOption"
+                            <%=setting.memberOption=='on' ? "checked" : "" %>>
+                        Members</input></div>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Apply</button>
+        </form>
+        <br>
+        <table class="table table-striped table-hover">
+            <thead>
+                <tr>
+                    <% if(setting.idOption=='on' ){ %>
+                        <th># <a href="<%= String(url.split('?')[1]).includes('asc') || String(url.split('?')[1]).includes('desc') ? '?' : url.split('=')[0]=='?idFilter' && (String(url.split('&')[url.split('&').length-2]).includes('desc') || String(url.split('&')[url.split('&').length-2]).includes('asc')) ? urls:url%>id_asc"><i class="fas fa-long-arrow-alt-up" style=<%=sorting=='id_asc' ? 'color:#DC3545':''%>></i></a><a href="<%= String(url.split('?')[1]).includes('asc') || String(url.split('?')[1]).includes('desc') ? '?' : url.split('=')[0]=='?idFilter' && (String(url.split('&')[url.split('&').length-2]).includes('desc') || String(url.split('&')[url.split('&').length-2]).includes('asc')) ? urls:url%>id_desc"><i class="fas fa-long-arrow-alt-down" style=<%=sorting=='id_desc' ? 'color:#DC3545':''%>></i></a></th>
+                        <% } %>
+                            <% if(setting.nameOption=='on' ){ %>
+                                <th>Name <a href="<%= String(url.split('?')[1]).includes('asc') || String(url.split('?')[1]).includes('desc') ? '?' : url.split('=')[0]=='?idFilter' && (String(url.split('&')[url.split('&').length-2]).includes('desc') || String(url.split('&')[url.split('&').length-2]).includes('asc')) ? urls:url%>name_asc"><i class="fas fa-long-arrow-alt-up" style=<%=sorting=='name_asc' ? 'color:#DC3545':''%>></i></a><a href="<%= String(url.split('?')[1]).includes('asc') || String(url.split('?')[1]).includes('desc') ? '?' : url.split('=')[0]=='?idFilter' && (String(url.split('&')[url.split('&').length-2]).includes('desc') || String(url.split('&')[url.split('&').length-2]).includes('asc')) ? urls:url%>name_desc"><i class="fas fa-long-arrow-alt-down" style=<%=sorting=='name_desc' ? 'color:#DC3545':''%>></i></a></th>
+                                <% } %>
+                                    <% if(setting.memberOption=='on' ){ %>
+                                        <th>Members <a href="<%= String(url.split('?')[1]).includes('asc') || String(url.split('?')[1]).includes('desc') ? '?' : url.split('=')[0]=='?idFilter' && (String(url.split('&')[url.split('&').length-2]).includes('desc') || String(url.split('&')[url.split('&').length-2]).includes('asc')) ? urls:url%>members_asc"><i class="fas fa-long-arrow-alt-up" style=<%=sorting=='members_asc' ? 'color:#DC3545':''%>></i></a><a href="<%= String(url.split('?')[1]).includes('asc') || String(url.split('?')[1]).includes('desc') ? '?' : url.split('=')[0]=='?idFilter' && (String(url.split('&')[url.split('&').length-2]).includes('desc') || String(url.split('&')[url.split('&').length-2]).includes('asc')) ? urls:url%>members_desc"><i class="fas fa-long-arrow-alt-down" style=<%=sorting=='members_desc' ? 'color:#DC3545':''%>></i></a></th>
+                                        <% } %>
+                                            <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% data.forEach((item, index)=>{ %>
+                    <tr>
+                        <% if(setting.idOption=='on' ){ %>
+                            <td><a href="/projects/overview/<%= item.projectid %>" style="text-decoration: none;">
+                                    <%=item.projectid %>
+                                </a></td>
+                            <% } %>
+                                <% if(setting.nameOption=='on' ){ %>
+                                    <td>
+                                        <%= item.name %>
+                                    </td>
+                                    <% } %>
+                                        <% if(setting.memberOption=='on' ){ %>
+                                            <td>
+                                                <%= item.firstname %>
+                                            </td>
+                                            <% } %>
+                                                <% if(setting.idOption=='on' || setting.nameOption=='on' || setting.memberOption=='on' ){ %>
+                                                    <td>
+                                                        <a class="btn btn-success"
+                                                            href="/projects/edit/<%= item.projectid %>"><i
+                                                                class="fas fa-edit"></i> Edit</a>
+                                                        <button type="button" class="btn btn-danger deleteButton" data-toggle="modal" deleteid="<%= item.projectid %>"
+                                                            data-target="#exampleModal" <%=role=='User'?'hidden':''%>><i class="fas fa-trash"></i>
+                                                            Delete</button>
+                                                        
+                                                    </td>
+                                                    <% } %>
+                    </tr>
+                    <% }) %>
+            </tbody>
+        </table>
+        <div class="pagination">
+            <a href="<%=url%><%=bridge%>page=<%= currentPage-1 %>" class=<%=currentPage==1 ? "disabled" :"" %> >Previous</a>
+            <% for( let i=1; i <=totalPage; i++ ) { %>
+                <a href="<%=url%><%=bridge%>page=<%= i %>" class="btn-page">
+                    <%= i %>
+                </a>
+                <% } %>
+                    <a href="<%=url%><%=bridge%>page=<%= currentPage + 1%>" class=<%=currentPage==totalPage ? "disabled" : "" %>
+                        >Next</a>
+        </div>
+        <br><br>
+        <a class="btn btn-primary" href="/projects/add"><i class="fas fa-plus-circle"></i> Add</a>
+    </div>
+    <br>
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">
+                    Delete Confirmation</h5>
+                </div>
+                <div class="modal-body">
+                    Are you sure want to delete this project?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+                    <a type="button" class="btn btn-primary" id="deleteproject">Yes</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        $(".deleteButton").click(function () {
+        let deleteId = $(this).attr('deleteid')
+        $("#deleteproject").attr("href", `/projects/delete/${deleteId}`);
+    });
+    </script>
+    <% include ../partial/footer.ejs %>

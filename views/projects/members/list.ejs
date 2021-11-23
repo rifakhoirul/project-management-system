@@ -1,0 +1,148 @@
+<% include ../../partial/header.ejs %>
+    <div class="container-fluid" style="padding-top: 56px">
+        <div class="row">
+            <% include ../../partial/sidebar.ejs %>
+                <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+                    <div
+                        class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                        <h1 class="h2">Members</h1>
+                    </div>
+                    <h4 class="mt-4 mb-3">Filters</h4>
+                    <div style="padding-left: 30px;padding-right:30px;">
+                        <form id="form-filter">
+                            <div class="containerCheck">
+                                <label for="idCheckFilter" style="width: 150px;"><input class="form-check-input"
+                                        type="checkbox" id="idCheckFilter" name="idCheckFilter" value="idCheckFilter"
+                                        <%=option.idCheckFilter ? "checked" :"" %>> ID</label>
+                                <input class="form-control" type="number" id="idFilter" name="idFilter" placeholder="ID"
+                                    value=<%=option.idFilter %>>
+                            </div>
+                            <div class="containerCheck">
+                                <label for="nameCheckFilter" style="width: 150px;"><input class="form-check-input"
+                                        type="checkbox" id="nameCheckFilter" name="nameCheckFilter"
+                                        value="nameCheckFilter" <%=option.nameCheckFilter ? "checked" :""%>> Name</label>
+                                <input class="form-control" type="text" id="nameFilter" name="nameFilter"
+                                    placeholder="Name" value="<%=option.nameFilter %>">
+                            </div>
+                            <div class="containerCheck">
+                                <label for="positionCheckFilter" style="width: 168px;"><input class="form-check-input"
+                                        type="checkbox" id="positionCheckFilter" name="positionCheckFilter"
+                                        value="positionCheckFilter" <%=option.positionCheckFilter ? "checked" :""
+                                        %>> Position</label>
+                                <select class="form-control" id="positionFilter" name="positionFilter">
+                                    <option value="" disabled selected>Choose the position ...</option>
+                                    <option value="Manager" <%=option.positionFilter=="Manager" ? "selected" : "" %>>
+                                        Manager
+                                    </option>
+                                    <option value="Software Developer" <%=option.positionFilter=="Software Developer" ? "selected" : "" %>
+                                        >
+                                        Software Developer
+                                    </option>
+                                    <option value="Quality Assurance" <%=option.positionFilter=="Quality Assurance"
+                                        ? "selected" : "" %>>
+                                        Quality Assurance
+                                    </option>
+                                </select>
+                            </div>
+                            <p></p>
+                            <button type="submit" class="btn btn-primary" id="search"><i class="fas fa-search"></i>
+                                Search</button>
+                            <a class="btn btn-secondary" id="resetFilter" <%=`href=/projects/members/${projectid}` %>><i
+                                    class="fas fa-times"></i>
+                                Reset</a>
+                        </form>
+                    </div>
+                    <h4 class="mt-4 mb-3">Options</h4>
+                    <form action="/projects/members/<%=projectid%>/saveoption" method="post">
+                        <div class="row">
+                            <div class="col-md-2">
+                                <p>Columns</p>
+                            </div>
+                            <div class="col-md-2">
+                                <div><input class="form-check-input" type="checkbox" id="idOption" name="idOption"
+                                        <%=setting.idOption=='on' ? "checked" : "" %> > ID</input></div>
+                                <div><input class="form-check-input" type="checkbox" id="nameOption" name="nameOption"
+                                        <%=setting.nameOption=='on' ? "checked" : "" %>> Name</input>
+                                </div>
+                                <div><input class="form-check-input" type="checkbox" id="positionOption"
+                                        name="positionOption" <%=setting.positionOption=='on' ? "checked" : "" %>>
+                                    Position</input></div>
+                            </div>
+                        </div>
+                        <p></p>
+                        <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Apply</button>
+                    </form>
+                    <br>
+                    <table class="table table-striped table-hover">
+                        <thead>
+                            <tr>
+                                <% if(setting.idOption=='on' ){ %>
+                                    <th># <a href="<%=projectid%><%= String(url.split('?')[1]).includes('asc') || String(url.split('?')[1]).includes('desc') ? '?' : url.split('=')[0]=='?idFilter' && (String(url.split('&')[url.split('&').length-2]).includes('desc') || String(url.split('&')[url.split('&').length-2]).includes('asc')) ? urls:url%>id_asc"><i class="fas fa-long-arrow-alt-up" style=<%=sorting=='id_asc' ? 'color:#DC3545':''%>></i></a><a href="<%=projectid%><%= String(url.split('?')[1]).includes('asc') || String(url.split('?')[1]).includes('desc') ? '?' : url.split('=')[0]=='?idFilter' && (String(url.split('&')[url.split('&').length-2]).includes('desc') || String(url.split('&')[url.split('&').length-2]).includes('asc')) ? urls:url%>id_desc"><i class="fas fa-long-arrow-alt-down" style=<%=sorting=='id_desc' ? 'color:#DC3545':''%>></i></a></th>
+                                    <% } %>
+                                        <% if(setting.nameOption=='on' ){ %>
+                                            <th>Name <a href="<%=projectid%><%= String(url.split('?')[1]).includes('asc') || String(url.split('?')[1]).includes('desc') ? '?' : url.split('=')[0]=='?idFilter' && (String(url.split('&')[url.split('&').length-2]).includes('desc') || String(url.split('&')[url.split('&').length-2]).includes('asc')) ? urls:url%>name_asc"><i class="fas fa-long-arrow-alt-up" style=<%=sorting=='name_asc' ? 'color:#DC3545':''%>></i></a><a href="<%=projectid%><%= String(url.split('?')[1]).includes('asc') || String(url.split('?')[1]).includes('desc') ? '?' : url.split('=')[0]=='?idFilter' && (String(url.split('&')[url.split('&').length-2]).includes('desc') || String(url.split('&')[url.split('&').length-2]).includes('asc')) ? urls:url%>name_desc"><i class="fas fa-long-arrow-alt-down" style=<%=sorting=='name_desc' ? 'color:#DC3545':''%>></i></a></th>
+                                            <% } %>
+                                                <% if(setting.positionOption=='on' ){ %>
+                                                    <th>Position <a href="<%=projectid%><%= String(url.split('?')[1]).includes('asc') || String(url.split('?')[1]).includes('desc') ? '?' : url.split('=')[0]=='?idFilter' && (String(url.split('&')[url.split('&').length-2]).includes('desc') || String(url.split('&')[url.split('&').length-2]).includes('asc')) ? urls:url%>position_asc"><i class="fas fa-long-arrow-alt-up" style=<%=sorting=='position_asc' ? 'color:#DC3545':''%>></i></a><a href="<%=projectid%><%= String(url.split('?')[1]).includes('asc') || String(url.split('?')[1]).includes('desc') ? '?' : url.split('=')[0]=='?idFilter' && (String(url.split('&')[url.split('&').length-2]).includes('desc') || String(url.split('&')[url.split('&').length-2]).includes('asc')) ? urls:url%>position_desc"><i class="fas fa-long-arrow-alt-down" style=<%=sorting=='position_desc' ? 'color:#DC3545':''%>></i></a></th>
+                                                    <% } %>
+                                                        <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% data.forEach((item, index)=>{ %>
+                                <tr>
+                                    <% if(setting.idOption=='on' ){ %>
+                                        <td><%=item.id %></td>
+                                        <% } %>
+                                            <% if(setting.nameOption=='on' ){ %>
+                                                <td>
+                                                    <%= item.firstname %>
+                                                </td>
+                                                <% } %>
+                                                    <% if(setting.positionOption=='on' ){ %>
+                                                        <td>
+                                                            <%= item.position %>
+                                                        </td>
+                                                        <% } %>
+                                                            <% if(setting.idOption=='on' || setting.nameOption=='on' || setting.positionOption=='on' ){ %>
+                                                                <td>
+                                                                    <a class="btn btn-success"
+                                                                        href="/projects/members/<%= projectid %>/edit/<%= item.id %>"><i
+                                                                            class="fas fa-edit"></i> Edit</a>
+                                                                    <a type="button" class="btn btn-danger"
+                                                                        href="/projects/members/<%= projectid %>/delete/<%= item.id %>"><i
+                                                                            class="fas fa-trash"></i>
+                                                                        Delete</a>
+                                                                </td>
+                                                                <% } %>
+                                </tr>
+                                <% }) %>
+                        </tbody>
+                    </table>
+                    <div class="pagination">
+                        <a href="<%=projectid%><%=url%><%=bridge%>page=<%= currentPage-1 %>" class=<%=currentPage==1 ? "disabled" :"" %>
+                            >Previous</a>
+                        <% for( let i=1; i <=totalPage; i++ ) { %>
+                            <a href="<%=projectid%><%=url%><%=bridge%>page=<%= i %>" class="btn-page">
+                                <%= i %>
+                            </a>
+                            <% } %>
+                                <a href="<%=projectid%><%=url%><%=bridge%>page=<%= currentPage + 1%>" class=<%=currentPage==totalPage
+                                    ? "disabled" : "" %>
+                                    >Next</a>
+                    </div>
+                    <br><br>
+                    <a class="btn btn-primary" href="/projects/members/<%= projectid %>/add"><i class="fas fa-plus-circle"></i> Add</a>
+                    
+                </main>
+                
+        </div>
+        <br>
+    </div>
+
+    <script>
+        function getDelete(){
+            
+        }
+    </script>
+    <% include ../../partial/footer.ejs %>

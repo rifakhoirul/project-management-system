@@ -1,0 +1,343 @@
+<% include ../../partial/header.ejs %>
+    <div class="container-fluid" style="padding-top: 56px">
+        <div class="row">
+            <% include ../../partial/sidebar.ejs %>
+                <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+                    <div
+                        class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                        <h1 class="h2">Issues</h1>
+                    </div>
+                    <h4 class="mt-4 mb-3">Filters</h4>
+                    <div style="padding-left: 30px;padding-right:30px;">
+                        <form id="form-filter">
+                            <div class="containerCheck">
+                                <label for="issueidCheckFilter" style="width: 150px;"><input class="form-check-input"
+                                        type="checkbox" id="issueidCheckFilter" name="issueidCheckFilter" value="issueidCheckFilter"
+                                        <%=option.issueidCheckFilter ? "checked" :"" %>> ID</label>
+                                <input class="form-control" type="number" id="issueidFilter" name="issueidFilter" placeholder="ID"
+                                    value=<%=option.issueidFilter %>>
+                            </div>
+                            <div class="containerCheck">
+                                <label for="subjectCheckFilter" style="width: 150px;"><input class="form-check-input"
+                                        type="checkbox" id="subjectCheckFilter" name="subjectCheckFilter"
+                                        value="subjectCheckFilter" <%=option.subjectCheckFilter ? "checked" :""%>> Subject</label>
+                                <input class="form-control" type="text" id="subjectFilter" name="subjectFilter"
+                                    placeholder="Subject" value="<%=option.subjectFilter %>">
+                            </div>
+                            <div class="containerCheck">
+                                <label for="trackerCheckFilter" style="width: 168px;"><input class="form-check-input"
+                                        type="checkbox" id="trackerCheckFilter" name="trackerCheckFilter"
+                                        value="trackerCheckFilter" <%=option.trackerCheckFilter ? "checked" :""%>> Tracker</label>
+                                <select class="form-control" id="trackerFilter" name="trackerFilter">
+                                    <option value="" disabled selected>Choose the tracker ...</option>
+                                    <option value="Bug" <%=option.trackerFilter=="Bug" ? "selected" : "" %>>
+                                        Bug
+                                    </option>
+                                    <option value="Feature" <%=option.trackerFilter=="Feature" ? "selected" : "" %>
+                                        >
+                                        Feature
+                                    </option>
+                                    <option value="Support" <%=option.trackerFilter=="Support"
+                                        ? "selected" : "" %>>
+                                        Support
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="containerCheck">
+                                <label for="statusCheckFilter" style="width: 168px;"><input class="form-check-input"
+                                        type="checkbox" id="statusCheckFilter" name="statusCheckFilter"
+                                        value="statusCheckFilter" <%=option.statusCheckFilter ? "checked" :""%>> Status</label>
+                                <select class="form-control" id="statusFilter" name="statusFilter">
+                                    <option value="" disabled selected>Choose the status ...</option>
+                                    <option value="New" <%=option.statusFilter=="New" ? "selected" : "" %>>
+                                        New
+                                    </option>
+                                    <option value="In Progress" <%=option.statusFilter=="In Progress" ? "selected" : "" %>
+                                        >
+                                        In Progress
+                                    </option>
+                                    <option value="Resolved" <%=option.statusFilter=="Resolved"
+                                        ? "selected" : "" %>>
+                                        Resolved
+                                    </option>
+                                    <option value="Feedback" <%=option.statusFilter=="Feedback"
+                                        ? "selected" : "" %>>
+                                        Feedback
+                                    </option>
+                                    <option value="Closed" <%=option.statusFilter=="Closed"
+                                        ? "selected" : "" %>>
+                                        Closed
+                                    </option>
+                                    <option value="Rejected" <%=option.statusFilter=="Rejected"
+                                        ? "selected" : "" %>>
+                                        Rejected
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="containerCheck">
+                                <label for="priorityCheckFilter" style="width: 168px;"><input class="form-check-input"
+                                        type="checkbox" id="priorityCheckFilter" name="priorityCheckFilter"
+                                        value="priorityCheckFilter" <%=option.priorityCheckFilter ? "checked" :""%>> Priority</label>
+                                <select class="form-control" id="priorityFilter" name="priorityFilter">
+                                    <option value="" disabled selected>Choose the priority ...</option>
+                                    <option value="Normal" <%=option.priorityFilter=="Normal" ? "selected" : "" %>>
+                                        Normal
+                                    </option>
+                                    <option value="High" <%=option.priorityFilter=="High" ? "selected" : "" %>
+                                        >
+                                        High
+                                    </option>
+                                    <option value="Urgent" <%=option.priorityFilter=="Urgent"
+                                        ? "selected" : "" %>>
+                                        Urgent
+                                    </option>
+                                    <option value="Immediate" <%=option.priorityFilter=="Immediate"
+                                        ? "selected" : "" %>>
+                                        Immediate
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="containerCheck">
+                                <label for="assigneeCheckFilter" style="width: 168px;"><input class="form-check-input"
+                                        type="checkbox" id="assigneeCheckFilter" name="assigneeCheckFilter"
+                                        value="assigneeCheckFilter" <%=option.assigneeCheckFilter ? "checked" :""%>> Assignee</label>
+                                <select class="form-control" id="assigneeFilter" name="assigneeFilter">
+                                    <option value="" disabled selected>Choose the assignee ...</option>
+                                    <% members.forEach((item, index)=>{ %>
+                                        <option value="<%= item.userid %>" <%=option.assigneeFilter==item.userid ? "selected" : "" %>>
+                                            <%= item.firstname %>
+                                        </option>
+                                        <% }) %>
+                                </select>
+                            </div>
+                            <p></p>
+                            <button type="submit" class="btn btn-primary" id="search"><i class="fas fa-search"></i>
+                                Search</button>
+                            <a class="btn btn-secondary" id="resetFilter" <%=`href=/projects/issues/${projectid}` %>><i
+                                    class="fas fa-times"></i>
+                                Reset</a>
+                        </form>
+                    </div>
+                    <h4 class="mt-4 mb-3">Options</h4>
+                    <form action="/projects/issues/<%=projectid%>/saveoption" method="post">
+                        <div class="row">
+                            <div class="col-md-2">
+                                <p>Columns</p>
+                            </div>
+                            <div class="col-md-2">
+                                <div><input class="form-check-input" type="checkbox" id="issueidOption" name="issueidOption"
+                                        <%=setting.issueidOption=='on' ? "checked" : "" %> > ID</input></div>
+                                <div><input class="form-check-input" type="checkbox" id="subjectOption" name="subjectOption"
+                                        <%=setting.subjectOption=='on' ? "checked" : "" %>> Subject</input>
+                                </div>
+                                <div><input class="form-check-input" type="checkbox" id="trackerOption"
+                                        name="trackerOption" <%=setting.trackerOption=='on' ? "checked" : "" %>>
+                                    Tracker</input></div>
+                                    <div><input class="form-check-input" type="checkbox" id="descriptionOption"
+                                        name="descriptionOption" <%=setting.descriptionOption=='on' ? "checked" : "" %>>
+                                    Description</input></div>
+                                    <div><input class="form-check-input" type="checkbox" id="statusOption"
+                                        name="statusOption" <%=setting.statusOption=='on' ? "checked" : "" %>>
+                                    Status</input></div>
+                            </div>
+                            <div class="col-md-2">
+                                <div><input class="form-check-input" type="checkbox" id="priorityOption"
+                                    name="priorityOption" <%=setting.priorityOption=='on' ? "checked" : "" %>>
+                                Priority</input></div>
+                                <div><input class="form-check-input" type="checkbox" id="assigneeOption"
+                                    name="assigneeOption" <%=setting.assigneeOption=='on' ? "checked" : "" %>>
+                                Assignee</input></div>
+                                <div><input class="form-check-input" type="checkbox" id="startdateOption"
+                                    name="startdateOption" <%=setting.startdateOption=='on' ? "checked" : "" %>>
+                                Start Date</input></div>
+                                <div><input class="form-check-input" type="checkbox" id="duedateOption"
+                                    name="duedateOption" <%=setting.duedateOption=='on' ? "checked" : "" %>>
+                                Due Date</input></div>
+                                <div><input class="form-check-input" type="checkbox" id="estimatedtimeOption"
+                                    name="estimatedtimeOption" <%=setting.estimatedtimeOption=='on' ? "checked" : "" %>>
+                                Est. Time</input></div>
+                            </div>
+                            <div class="col-md-2">
+                                <div><input class="form-check-input" type="checkbox" id="doneOption"
+                                    name="doneOption" <%=setting.doneOption=='on' ? "checked" : "" %>>
+                                Done</input></div>
+                                <div><input class="form-check-input" type="checkbox" id="spenttimeOption"
+                                    name="spenttimeOption" <%=setting.spenttimeOption=='on' ? "checked" : "" %>>
+                                Spent Time</input></div>
+                                <div><input class="form-check-input" type="checkbox" id="targetversionOption"
+                                    name="targetversionOption" <%=setting.targetversionOption=='on' ? "checked" : "" %>>
+                                Target Ver.</input></div>
+                                <div><input class="form-check-input" type="checkbox" id="authorOption"
+                                    name="authorOption" <%=setting.authorOption=='on' ? "checked" : "" %>>
+                                Author</input></div>
+                                <div><input class="form-check-input" type="checkbox" id="parenttaskOption"
+                                    name="parenttaskOption" <%=setting.parenttaskOption=='on' ? "checked" : "" %>>
+                                Parent Task</input></div>
+                            </div>
+                            <div class="col-md-2">
+                                <div><input class="form-check-input" type="checkbox" id="createddateOption"
+                                    name="createddateOption" <%=setting.createddateOption=='on' ? "checked" : "" %>>
+                                Created Date</input></div>
+                                <div><input class="form-check-input" type="checkbox" id="updateddateOption"
+                                    name="updateddateOption" <%=setting.updateddateOption=='on' ? "checked" : "" %>>
+                                Updated Date</input></div>
+                                <div><input class="form-check-input" type="checkbox" id="closeddateOption"
+                                    name="closeddateOption" <%=setting.closeddateOption=='on' ? "checked" : "" %>>
+                                Closed Date</input></div>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Apply</button>
+                    </form>
+                    <br>
+                    <table class="table table-striped table-hover table-long">
+                        <thead>
+                            <tr>
+                                <% if(setting.issueidOption=='on' ){ %>
+                                    <th># <a href="<%=projectid%><%= String(url.split('?')[1]).includes('asc') || String(url.split('?')[1]).includes('desc') ? '?' : url.split('=')[0]=='?idFilter' && (String(url.split('&')[url.split('&').length-2]).includes('desc') || String(url.split('&')[url.split('&').length-2]).includes('asc')) ? urls:url%>issueid_asc"><i class="fas fa-long-arrow-alt-up" style=<%=sorting=='issueid_asc' ? 'color:#DC3545':''%>></i></a><a href="<%=projectid%><%= String(url.split('?')[1]).includes('asc') || String(url.split('?')[1]).includes('desc') ? '?' : url.split('=')[0]=='?idFilter' && (String(url.split('&')[url.split('&').length-2]).includes('desc') || String(url.split('&')[url.split('&').length-2]).includes('asc')) ? urls:url%>issueid_desc"><i class="fas fa-long-arrow-alt-down" style=<%=sorting=='issueid_desc' ? 'color:#DC3545':''%>></i></a></th>
+                                    <% } %>
+                                    <% if(setting.subjectOption=='on' ){ %>
+                                        <th>Subject <a href="<%=projectid%><%= String(url.split('?')[1]).includes('asc') || String(url.split('?')[1]).includes('desc') ? '?' : url.split('=')[0]=='?idFilter' && (String(url.split('&')[url.split('&').length-2]).includes('desc') || String(url.split('&')[url.split('&').length-2]).includes('asc')) ? urls:url%>subject_asc"><i class="fas fa-long-arrow-alt-up" style=<%=sorting=='subject_asc' ? 'color:#DC3545':''%>></i></a><a href="<%=projectid%><%= String(url.split('?')[1]).includes('asc') || String(url.split('?')[1]).includes('desc') ? '?' : url.split('=')[0]=='?idFilter' && (String(url.split('&')[url.split('&').length-2]).includes('desc') || String(url.split('&')[url.split('&').length-2]).includes('asc')) ? urls:url%>subject_desc"><i class="fas fa-long-arrow-alt-down" style=<%=sorting=='subject_desc' ? 'color:#DC3545':''%>></i></a></th>
+                                        <% } %>
+                                        <% if(setting.trackerOption=='on' ){ %>
+                                            <th>Tracker <a href="<%=projectid%><%= String(url.split('?')[1]).includes('asc') || String(url.split('?')[1]).includes('desc') ? '?' : url.split('=')[0]=='?idFilter' && (String(url.split('&')[url.split('&').length-2]).includes('desc') || String(url.split('&')[url.split('&').length-2]).includes('asc')) ? urls:url%>tracker_asc"><i class="fas fa-long-arrow-alt-up" style=<%=sorting=='tracker_asc' ? 'color:#DC3545':''%>></i></a><a href="<%=projectid%><%= String(url.split('?')[1]).includes('asc') || String(url.split('?')[1]).includes('desc') ? '?' : url.split('=')[0]=='?idFilter' && (String(url.split('&')[url.split('&').length-2]).includes('desc') || String(url.split('&')[url.split('&').length-2]).includes('asc')) ? urls:url%>tracker_desc"><i class="fas fa-long-arrow-alt-down" style=<%=sorting=='tracker_desc' ? 'color:#DC3545':''%>></i></a></th>
+                                            <% } %>
+                                            <% if(setting.descriptionOption=='on' ){ %>
+                                                <th>Description <a href="<%=projectid%><%= String(url.split('?')[1]).includes('asc') || String(url.split('?')[1]).includes('desc') ? '?' : url.split('=')[0]=='?idFilter' && (String(url.split('&')[url.split('&').length-2]).includes('desc') || String(url.split('&')[url.split('&').length-2]).includes('asc')) ? urls:url%>description_asc"><i class="fas fa-long-arrow-alt-up" style=<%=sorting=='description_asc' ? 'color:#DC3545':''%>></i></a><a href="<%=projectid%><%= String(url.split('?')[1]).includes('asc') || String(url.split('?')[1]).includes('desc') ? '?' : url.split('=')[0]=='?idFilter' && (String(url.split('&')[url.split('&').length-2]).includes('desc') || String(url.split('&')[url.split('&').length-2]).includes('asc')) ? urls:url%>description_desc"><i class="fas fa-long-arrow-alt-down" style=<%=sorting=='description_desc' ? 'color:#DC3545':''%>></i></a></th>
+                                                <% } %>
+                                                <% if(setting.statusOption=='on' ){ %>
+                                                    <th>Status <a href="<%=projectid%><%= String(url.split('?')[1]).includes('asc') || String(url.split('?')[1]).includes('desc') ? '?' : url.split('=')[0]=='?idFilter' && (String(url.split('&')[url.split('&').length-2]).includes('desc') || String(url.split('&')[url.split('&').length-2]).includes('asc')) ? urls:url%>status_asc"><i class="fas fa-long-arrow-alt-up" style=<%=sorting=='status_asc' ? 'color:#DC3545':''%>></i></a><a href="<%=projectid%><%= String(url.split('?')[1]).includes('asc') || String(url.split('?')[1]).includes('desc') ? '?' : url.split('=')[0]=='?idFilter' && (String(url.split('&')[url.split('&').length-2]).includes('desc') || String(url.split('&')[url.split('&').length-2]).includes('asc')) ? urls:url%>status_desc"><i class="fas fa-long-arrow-alt-down" style=<%=sorting=='status_desc' ? 'color:#DC3545':''%>></i></a></th>
+                                                    <% } %>
+                                                    <% if(setting.priorityOption=='on' ){ %>
+                                                        <th>Priority <a href="<%=projectid%><%= String(url.split('?')[1]).includes('asc') || String(url.split('?')[1]).includes('desc') ? '?' : url.split('=')[0]=='?idFilter' && (String(url.split('&')[url.split('&').length-2]).includes('desc') || String(url.split('&')[url.split('&').length-2]).includes('asc')) ? urls:url%>priority_asc"><i class="fas fa-long-arrow-alt-up" style=<%=sorting=='priority_asc' ? 'color:#DC3545':''%>></i></a><a href="<%=projectid%><%= String(url.split('?')[1]).includes('asc') || String(url.split('?')[1]).includes('desc') ? '?' : url.split('=')[0]=='?idFilter' && (String(url.split('&')[url.split('&').length-2]).includes('desc') || String(url.split('&')[url.split('&').length-2]).includes('asc')) ? urls:url%>priority_desc"><i class="fas fa-long-arrow-alt-down" style=<%=sorting=='priority_desc' ? 'color:#DC3545':''%>></i></a></th>
+                                                        <% } %>
+                                                        <% if(setting.assigneeOption=='on' ){ %>
+                                                            <th>Assignee <a href="<%=projectid%><%= String(url.split('?')[1]).includes('asc') || String(url.split('?')[1]).includes('desc') ? '?' : url.split('=')[0]=='?idFilter' && (String(url.split('&')[url.split('&').length-2]).includes('desc') || String(url.split('&')[url.split('&').length-2]).includes('asc')) ? urls:url%>assignee_asc"><i class="fas fa-long-arrow-alt-up" style=<%=sorting=='assignee_asc' ? 'color:#DC3545':''%>></i></a><a href="<%=projectid%><%= String(url.split('?')[1]).includes('asc') || String(url.split('?')[1]).includes('desc') ? '?' : url.split('=')[0]=='?idFilter' && (String(url.split('&')[url.split('&').length-2]).includes('desc') || String(url.split('&')[url.split('&').length-2]).includes('asc')) ? urls:url%>assignee_desc"><i class="fas fa-long-arrow-alt-down" style=<%=sorting=='assignee_desc' ? 'color:#DC3545':''%>></i></a></th>
+                                                            <% } %>
+                                                            <% if(setting.startdateOption=='on' ){ %>
+                                                                <th>Start Date <a href="<%=projectid%><%= String(url.split('?')[1]).includes('asc') || String(url.split('?')[1]).includes('desc') ? '?' : url.split('=')[0]=='?idFilter' && (String(url.split('&')[url.split('&').length-2]).includes('desc') || String(url.split('&')[url.split('&').length-2]).includes('asc')) ? urls:url%>startdate_asc"><i class="fas fa-long-arrow-alt-up" style=<%=sorting=='startdate_asc' ? 'color:#DC3545':''%>></i></a><a href="<%=projectid%><%= String(url.split('?')[1]).includes('asc') || String(url.split('?')[1]).includes('desc') ? '?' : url.split('=')[0]=='?idFilter' && (String(url.split('&')[url.split('&').length-2]).includes('desc') || String(url.split('&')[url.split('&').length-2]).includes('asc')) ? urls:url%>startdate_desc"><i class="fas fa-long-arrow-alt-down" style=<%=sorting=='startdate_desc' ? 'color:#DC3545':''%>></i></a></th>
+                                                                <% } %>
+                                                                <% if(setting.duedateOption=='on' ){ %>
+                                                                    <th>Due Date <a href="<%=projectid%><%= String(url.split('?')[1]).includes('asc') || String(url.split('?')[1]).includes('desc') ? '?' : url.split('=')[0]=='?idFilter' && (String(url.split('&')[url.split('&').length-2]).includes('desc') || String(url.split('&')[url.split('&').length-2]).includes('asc')) ? urls:url%>duedate_asc"><i class="fas fa-long-arrow-alt-up" style=<%=sorting=='duedate_asc' ? 'color:#DC3545':''%>></i></a><a href="<%=projectid%><%= String(url.split('?')[1]).includes('asc') || String(url.split('?')[1]).includes('desc') ? '?' : url.split('=')[0]=='?idFilter' && (String(url.split('&')[url.split('&').length-2]).includes('desc') || String(url.split('&')[url.split('&').length-2]).includes('asc')) ? urls:url%>duedate_desc"><i class="fas fa-long-arrow-alt-down" style=<%=sorting=='duedate_desc' ? 'color:#DC3545':''%>></i></a></th>
+                                                                    <% } %>
+                                                                    <% if(setting.estimatedtimeOption=='on' ){ %>
+                                                                        <th>Est. Time (h) <a href="<%=projectid%><%= String(url.split('?')[1]).includes('asc') || String(url.split('?')[1]).includes('desc') ? '?' : url.split('=')[0]=='?idFilter' && (String(url.split('&')[url.split('&').length-2]).includes('desc') || String(url.split('&')[url.split('&').length-2]).includes('asc')) ? urls:url%>estimatedtime_asc"><i class="fas fa-long-arrow-alt-up" style=<%=sorting=='estimatedtime_asc' ? 'color:#DC3545':''%>></i></a><a href="<%=projectid%><%= String(url.split('?')[1]).includes('asc') || String(url.split('?')[1]).includes('desc') ? '?' : url.split('=')[0]=='?idFilter' && (String(url.split('&')[url.split('&').length-2]).includes('desc') || String(url.split('&')[url.split('&').length-2]).includes('asc')) ? urls:url%>estimatedtime_desc"><i class="fas fa-long-arrow-alt-down" style=<%=sorting=='estimatedtime_desc' ? 'color:#DC3545':''%>></i></a></th>
+                                                                        <% } %>
+                                                                        <% if(setting.doneOption=='on' ){ %>
+                                                                            <th>Done (%) <a href="<%=projectid%><%= String(url.split('?')[1]).includes('asc') || String(url.split('?')[1]).includes('desc') ? '?' : url.split('=')[0]=='?idFilter' && (String(url.split('&')[url.split('&').length-2]).includes('desc') || String(url.split('&')[url.split('&').length-2]).includes('asc')) ? urls:url%>done_asc"><i class="fas fa-long-arrow-alt-up" style=<%=sorting=='done_asc' ? 'color:#DC3545':''%>></i></a><a href="<%=projectid%><%= String(url.split('?')[1]).includes('asc') || String(url.split('?')[1]).includes('desc') ? '?' : url.split('=')[0]=='?idFilter' && (String(url.split('&')[url.split('&').length-2]).includes('desc') || String(url.split('&')[url.split('&').length-2]).includes('asc')) ? urls:url%>done_desc"><i class="fas fa-long-arrow-alt-down" style=<%=sorting=='done_desc' ? 'color:#DC3545':''%>></i></a></th>
+                                                                            <% } %>
+                                                                            <% if(setting.spenttimeOption=='on' ){ %>
+                                                                                <th>Spent Time (h) <a href="<%=projectid%><%= String(url.split('?')[1]).includes('asc') || String(url.split('?')[1]).includes('desc') ? '?' : url.split('=')[0]=='?idFilter' && (String(url.split('&')[url.split('&').length-2]).includes('desc') || String(url.split('&')[url.split('&').length-2]).includes('asc')) ? urls:url%>spenttime_asc"><i class="fas fa-long-arrow-alt-up" style=<%=sorting=='spenttime_asc' ? 'color:#DC3545':''%>></i></a><a href="<%=projectid%><%= String(url.split('?')[1]).includes('asc') || String(url.split('?')[1]).includes('desc') ? '?' : url.split('=')[0]=='?idFilter' && (String(url.split('&')[url.split('&').length-2]).includes('desc') || String(url.split('&')[url.split('&').length-2]).includes('asc')) ? urls:url%>spenttime_desc"><i class="fas fa-long-arrow-alt-down" style=<%=sorting=='spenttime_desc' ? 'color:#DC3545':''%>></i></a></th>
+                                                                                <% } %>
+                                                                                <% if(setting.targetversionOption=='on' ){ %>
+                                                                                    <th>Target Ver. <a href="<%=projectid%><%= String(url.split('?')[1]).includes('asc') || String(url.split('?')[1]).includes('desc') ? '?' : url.split('=')[0]=='?idFilter' && (String(url.split('&')[url.split('&').length-2]).includes('desc') || String(url.split('&')[url.split('&').length-2]).includes('asc')) ? urls:url%>targetversion_asc"><i class="fas fa-long-arrow-alt-up" style=<%=sorting=='targetversion_asc' ? 'color:#DC3545':''%>></i></a><a href="<%=projectid%><%= String(url.split('?')[1]).includes('asc') || String(url.split('?')[1]).includes('desc') ? '?' : url.split('=')[0]=='?idFilter' && (String(url.split('&')[url.split('&').length-2]).includes('desc') || String(url.split('&')[url.split('&').length-2]).includes('asc')) ? urls:url%>targetversion_desc"><i class="fas fa-long-arrow-alt-down" style=<%=sorting=='targetversion_desc' ? 'color:#DC3545':''%>></i></a></th>
+                                                                                    <% } %>
+                                                                                    <% if(setting.authorOption=='on' ){ %>
+                                                                                        <th>Author <a href="<%=projectid%><%= String(url.split('?')[1]).includes('asc') || String(url.split('?')[1]).includes('desc') ? '?' : url.split('=')[0]=='?idFilter' && (String(url.split('&')[url.split('&').length-2]).includes('desc') || String(url.split('&')[url.split('&').length-2]).includes('asc')) ? urls:url%>author_asc"><i class="fas fa-long-arrow-alt-up" style=<%=sorting=='author_asc' ? 'color:#DC3545':''%>></i></a><a href="<%=projectid%><%= String(url.split('?')[1]).includes('asc') || String(url.split('?')[1]).includes('desc') ? '?' : url.split('=')[0]=='?idFilter' && (String(url.split('&')[url.split('&').length-2]).includes('desc') || String(url.split('&')[url.split('&').length-2]).includes('asc')) ? urls:url%>author_desc"><i class="fas fa-long-arrow-alt-down" style=<%=sorting=='author_desc' ? 'color:#DC3545':''%>></i></a></th>
+                                                                                        <% } %>
+                                                                                        <% if(setting.parenttaskOption=='on' ){ %>
+                                                                                            <th>Parent Task <a href="<%=projectid%><%= String(url.split('?')[1]).includes('asc') || String(url.split('?')[1]).includes('desc') ? '?' : url.split('=')[0]=='?idFilter' && (String(url.split('&')[url.split('&').length-2]).includes('desc') || String(url.split('&')[url.split('&').length-2]).includes('asc')) ? urls:url%>parenttask_asc"><i class="fas fa-long-arrow-alt-up" style=<%=sorting=='parenttask_asc' ? 'color:#DC3545':''%>></i></a><a href="<%=projectid%><%= String(url.split('?')[1]).includes('asc') || String(url.split('?')[1]).includes('desc') ? '?' : url.split('=')[0]=='?idFilter' && (String(url.split('&')[url.split('&').length-2]).includes('desc') || String(url.split('&')[url.split('&').length-2]).includes('asc')) ? urls:url%>parenttask_desc"><i class="fas fa-long-arrow-alt-down" style=<%=sorting=='parenttask_desc' ? 'color:#DC3545':''%>></i></a></th>
+                                                                                            <% } %>
+                                                                                            <% if(setting.createddateOption=='on' ){ %>
+                                                                                                <th>Created Date <a href="<%=projectid%><%= String(url.split('?')[1]).includes('asc') || String(url.split('?')[1]).includes('desc') ? '?' : url.split('=')[0]=='?idFilter' && (String(url.split('&')[url.split('&').length-2]).includes('desc') || String(url.split('&')[url.split('&').length-2]).includes('asc')) ? urls:url%>createddate_asc"><i class="fas fa-long-arrow-alt-up" style=<%=sorting=='createddate_asc' ? 'color:#DC3545':''%>></i></a><a href="<%=projectid%><%= String(url.split('?')[1]).includes('asc') || String(url.split('?')[1]).includes('desc') ? '?' : url.split('=')[0]=='?idFilter' && (String(url.split('&')[url.split('&').length-2]).includes('desc') || String(url.split('&')[url.split('&').length-2]).includes('asc')) ? urls:url%>createddate_desc"><i class="fas fa-long-arrow-alt-down" style=<%=sorting=='createddate_desc' ? 'color:#DC3545':''%>></i></a></th>
+                                                                                                <% } %>
+                                                                                                <% if(setting.updateddateOption=='on' ){ %>
+                                                                                                    <th>Updated Date <a href="<%=projectid%><%= String(url.split('?')[1]).includes('asc') || String(url.split('?')[1]).includes('desc') ? '?' : url.split('=')[0]=='?idFilter' && (String(url.split('&')[url.split('&').length-2]).includes('desc') || String(url.split('&')[url.split('&').length-2]).includes('asc')) ? urls:url%>updateddate_asc"><i class="fas fa-long-arrow-alt-up" style=<%=sorting=='updateddate_asc' ? 'color:#DC3545':''%>></i></a><a href="<%=projectid%><%= String(url.split('?')[1]).includes('asc') || String(url.split('?')[1]).includes('desc') ? '?' : url.split('=')[0]=='?idFilter' && (String(url.split('&')[url.split('&').length-2]).includes('desc') || String(url.split('&')[url.split('&').length-2]).includes('asc')) ? urls:url%>updateddate_desc"><i class="fas fa-long-arrow-alt-down" style=<%=sorting=='updateddate_desc' ? 'color:#DC3545':''%>></i></a></th>
+                                                                                                    <% } %>
+                                                                                                    <% if(setting.closeddateOption=='on' ){ %>
+                                                                                                        <th>Closed Date <a href="<%=projectid%><%= String(url.split('?')[1]).includes('asc') || String(url.split('?')[1]).includes('desc') ? '?' : url.split('=')[0]=='?idFilter' && (String(url.split('&')[url.split('&').length-2]).includes('desc') || String(url.split('&')[url.split('&').length-2]).includes('asc')) ? urls:url%>closeddate_asc"><i class="fas fa-long-arrow-alt-up" style=<%=sorting=='closeddate_asc' ? 'color:#DC3545':''%>></i></a><a href="<%=projectid%><%= String(url.split('?')[1]).includes('asc') || String(url.split('?')[1]).includes('desc') ? '?' : url.split('=')[0]=='?idFilter' && (String(url.split('&')[url.split('&').length-2]).includes('desc') || String(url.split('&')[url.split('&').length-2]).includes('asc')) ? urls:url%>closeddate_desc"><i class="fas fa-long-arrow-alt-down" style=<%=sorting=='closeddate_desc' ? 'color:#DC3545':''%>></i></a></th>
+                                                                                                        <% } %>
+                                                        <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% data.forEach((item, index)=>{ %>
+                                <tr>
+                                    <% if(setting.issueidOption=='on' ){ %>
+                                        <td><%=item.issueid %></td>
+                                        <% } %>
+                                            <% if(setting.subjectOption=='on' ){ %>
+                                                <td><%= item.subject %></td>
+                                                <% } %>
+                                                    <% if(setting.trackerOption=='on' ){ %>
+                                                        <td><%= item.tracker %></td>
+                                                        <% } %>
+                                                        <% if(setting.descriptionOption=='on' ){ %>
+                                                            <td><%= item.description %></td>
+                                                            <% } %>
+                                                            <% if(setting.statusOption=='on' ){ %>
+                                                                <td><%= item.status %></td>
+                                                                <% } %>
+                                                                <% if(setting.priorityOption=='on' ){ %>
+                                                                    <td><%= item.priority %></td>
+                                                                    <% } %>
+                                                                    <% if(setting.assigneeOption=='on' ){ %>
+                                                                        <td><%= item.assignee %></td>
+                                                                        <% } %>
+                                                                        <% if(setting.startdateOption=='on' ){ %>
+                                                                            <td><%= item.startdate %></td>
+                                                                            <% } %>
+                                                                            <% if(setting.duedateOption=='on' ){ %>
+                                                                                <td><%= item.duedate %></td>
+                                                                                <% } %>
+                                                                                <% if(setting.estimatedtimeOption=='on' ){ %>
+                                                                                    <td><%= item.estimatedtime %></td>
+                                                                                    <% } %>
+                                                                                    <% if(setting.doneOption=='on' ){ %>
+                                                                                        <td><%= item.done %></td>
+                                                                                        <% } %>
+                                                                                        <% if(setting.spenttimeOption=='on' ){ %>
+                                                                                            <td><%= item.spenttime %></td>
+                                                                                            <% } %>
+                                                                                            <% if(setting.targetversionOption=='on' ){ %>
+                                                                                                <td><%= item.targetversion %></td>
+                                                                                                <% } %>
+                                                                                                <% if(setting.authorOption=='on' ){ %>
+                                                                                                    <td><%= item.author %></td>
+                                                                                                    <% } %>
+                                                                                                    <% if(setting.parenttaskOption=='on' ){ %>
+                                                                                                        <td><%= item.parenttask %></td>
+                                                                                                        <% } %>
+                                                                                                        <% if(setting.createddateOption=='on' ){ %>
+                                                                                                            <td><%= item.createddate %></td>
+                                                                                                            <% } %>
+                                                                                                            <% if(setting.updateddateOption=='on' ){ %>
+                                                                                                                <td><%= item.updateddate %></td>
+                                                                                                                <% } %>
+                                                                                                                <% if(setting.closeddateOption=='on' ){ %>
+                                                                                                                    <td><%= item.closeddate %></td>
+                                                                                                                    <% } %>
+                                                            <% if(setting.issueidOption=='on' || setting.subjectOption=='on' || setting.trackerOption=='on' || setting.descriptionOption=='on' || setting.statusOption=='on' || setting.priorityOption=='on' || setting.assigneeOption=='on' || setting.startdateOption=='on'|| setting.duedateOption=='on' || setting.estimatedtimeOption=='on' || setting.doneOption=='on' || setting.spenttimeOption=='on' || setting.targetversionOption=='on' || setting.authorOption=='on' || setting.parenttaskOption=='on' || setting.createddateOption=='on' || setting.updateddateOption=='on' || setting.closeddateOption=='on' ){ %>
+                                                                <td>
+                                                                    <a class="btn btn-success"
+                                                                        href="/projects/issues/<%= projectid %>/edit/<%= item.issueid %>"><i
+                                                                            class="fas fa-edit"></i> Edit</a>
+                                                                    <a class="btn btn-danger" href="/projects/issues/<%= projectid %>/delete/<%= item.issueid %>"><i class="fas fa-trash" onclick=""></i>
+                                                                        Delete</a> 
+                                                                </td>
+                                                                <% } %>
+                                </tr>
+                                <% }) %>
+                        </tbody>
+                    </table>
+                    <br>
+                    <div class="pagination">
+                        <a href="<%=projectid%><%=url%><%=bridge%>page=<%= currentPage-1 %>" class=<%=currentPage==1 ? "disabled" :"" %>
+                            >Previous</a>
+                        <% for( let i=1; i <=totalPage; i++ ) { %>
+                            <a href="<%=projectid%><%=url%><%=bridge%>page=<%= i %>" class="btn-page">
+                                <%= i %>
+                            </a>
+                            <% } %>
+                                <a href="<%=projectid%><%=url%><%=bridge%>page=<%= currentPage + 1%>" class=<%=currentPage==totalPage
+                                    ? "disabled" : "" %>
+                                    >Next</a>
+                    </div>
+                    <br><br>
+                    <a class="btn btn-primary" href="/projects/issues/<%= projectid %>/add"><i class="fas fa-plus-circle"></i> Add</a>
+                    
+                </main>
+                
+        </div>
+        <br>
+    </div>
+    <% include ../../partial/footer.ejs %>

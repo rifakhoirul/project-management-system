@@ -1,0 +1,280 @@
+<% include ../../partial/header.ejs %>
+    <div class="container-fluid" style="padding-top: 56px">
+        <div class="row">
+            <% include ../../partial/sidebar.ejs %>
+                <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+                    <div
+                        class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                        <h1 class="h2"><a href="/projects/issues/<%=projectid%>"><i
+                                    class="fas fa-arrow-circle-left"></i></a> Add Issue</h1>
+                    </div>
+                    <div class="border rounded p-3" style="max-width: 1200px; margin-bottom: 30px;">
+                        <form id="form-add-issue" action="/projects/issues/<%=projectid%>/add" method="POST"
+                            encType="multipart/form-data" style="padding:20px 20px;">
+                            <div class="row mb-3">
+                                <legend class="col-form-label col-sm-2 pt-0">Tracker</legend>
+                                <div class="col-sm-10">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="tracker" id="Bug"
+                                            value="Bug">
+                                        <label class="form-check-label" for="Bug">
+                                            Bug
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="tracker" id="Feature"
+                                            value="Feature" checked>
+                                        <label class="form-check-label" for="Feature">
+                                            Feature
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="tracker" id="Support"
+                                            value="Support">
+                                        <label class="form-check-label" for="Support">
+                                            Support
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mb-3 ">
+                                <label for="subject" class="col-sm-2 col-form-label">Subject</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="subject" name="subject"
+                                        placeholder="Subject" required>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <label for="description" class="col-sm-2 col-form-label">Description</label>
+                                <div class="col-sm-9">
+                                    <textarea type="text" class="form-control" id="description" name="description"
+                                        placeholder="Description" required></textarea>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <legend class="col-form-label col-sm-2 pt-0">Status</legend>
+                                <div class="col-sm-10">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="status" id="New" value="New"
+                                            checked>
+                                        <label class="form-check-label" for="New">
+                                            New
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="status" id="Progress"
+                                            value="In Progress">
+                                        <label class="form-check-label" for="Progress">
+                                            In Progress
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="status" id="Resolved"
+                                            value="Resolved">
+                                        <label class="form-check-label" for="Resolved">
+                                            Resolved
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="status" id="Feedback"
+                                            value="Feedback">
+                                        <label class="form-check-label" for="Feedback">
+                                            Feedback
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="status" id="Closed"
+                                            value="Closed">
+                                        <label class="form-check-label" for="Closed">
+                                            Closed
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="status" id="Rejected"
+                                            value="Rejected">
+                                        <label class="form-check-label" for="Rejected">
+                                            Rejected
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <legend class="col-form-label col-sm-2 pt-0">Priority</legend>
+                                <div class="col-sm-10">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="priority" id="Normal"
+                                            value="Normal" checked>
+                                        <label class="form-check-label" for="Normal">
+                                            Normal
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="priority" id="High"
+                                            value="High">
+                                        <label class="form-check-label" for="High">
+                                            High
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="priority" id="Urgent"
+                                            value="Urgent">
+                                        <label class="form-check-label" for="Urgent">
+                                            Urgent
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="priority" id="Immediate"
+                                            value="Immediate">
+                                        <label class="form-check-label" for="Immediate">
+                                            Immediate
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mb-3 align-items-center">
+                                <label for="assignee" class="col-sm-2 col-form-label">Assignee</label>
+                                <div class="col-sm-9">
+                                    <select class="form-control" id="assignee" name="assignee">
+                                        <option value="" disabled selected>Choose the assignee ...</option>
+                                        <% members.forEach((item, index)=>{ %>
+                                            <option value="<%= item.userid %>">
+                                                <%= item.firstname %>
+                                            </option>
+                                            <% }) %>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row mb-3 align-items-center">
+                                <label for="startdate" class="col-sm-2 col-form-label">Start Date</label>
+                                <div class="col-sm-10">
+                                    <input class="form-control" placeholder="Start date" type="text"
+                                        onfocus="(this.type='date')" id="startdate" name="startdate" required>
+                                </div>
+                            </div>
+                            <div class="row mb-3 align-items-center">
+                                <label for="duedate" class="col-sm-2 col-form-label">Due Date</label>
+                                <div class="col-sm-10">
+                                    <input class="form-control" placeholder="Due date" type="text"
+                                        onfocus="(this.type='date')" id="duedate" name="duedate" required>
+                                </div>
+                            </div>
+                            <div class="row mb-3 align-items-center">
+                                <label for="estimatedtime" class="col-sm-2 col-form-label">Estimated Time</label>
+                                <div class="col-sm-10">
+                                    <input type="number" step="any" class="form-control" id="estimatedtime"
+                                        name="estimatedtime" placeholder="Estimated Time" required>
+                                </div>
+                            </div>
+                            <div class="row mb-3 align-items-center">
+                                <label for="done" class="col-sm-2 col-form-label">% Done</label>
+                                <div class="col-sm-9">
+                                    <select class="form-control" id="done" name="done">
+                                        <option value="0" selected>0</option>
+                                        <option value="10">10</option>
+                                        <option value="20">20</option>
+                                        <option value="30">30</option>
+                                        <option value="40">40</option>
+                                        <option value="50">50</option>
+                                        <option value="60">60</option>
+                                        <option value="70">70</option>
+                                        <option value="80">80</option>
+                                        <option value="90">90</option>
+                                        <option value="100">100</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-sm-2">
+                                    <label for="files" class="col-form-label">Files</label>
+                                </div>
+                                <div class="col-sm-9">
+
+                                    <div class="mb-3 d-flex file-input">
+                                        <input type="file" data-id="0" id="files0" name="files0"
+                                            class="form-control file-preview" placeholder="Files">
+                                        <button id="delete-file-input" type="button" class="btn btn-outline-danger ms-3"
+                                            hidden="">-</button>
+                                    </div>
+                                    <p></p>
+
+                                    <button id="add-file-form" type="button" class="btn btn-outline-primary">+</button>
+                                </div>
+                            </div>
+                            <p></p>
+
+                            <button type="submit" class="btn btn-primary" id="search"><i class="fas fa-save"></i>
+                                Save</button>
+                        </form>
+                        <br>
+                    </div>
+                </main>
+        </div>
+    </div>
+    <script>
+        let countFileInput = 1;
+        $("#form-add-issue").on('click', '#add-file-form', function (event) {
+            event.preventDefault()
+            $('.file-input').last().after(`
+            <div class="mb-3 d-flex file-input">
+                <input type="file" data-id="${countFileInput}" id="files${countFileInput}" name="files${countFileInput}" class="form-control file-preview" placeholder="Files">
+                <button id="delete-file-input" type="button" class="btn btn-outline-danger ms-3">-</button>
+                </div>
+            `)
+            countFileInput++
+        })
+
+        $("#form-add-issue").on('click', '#delete-file-input', function (event) {
+            event.preventDefault()
+
+            let idFile = $(this).parent().prev().attr('data-id')
+            let firstInput = $(this).prev().attr('data-id')
+
+            if (idFile == "img-preview") {
+                $(this).parent().prev().remove();
+                if (firstInput == "0") {
+                    $(this).prev().val("")
+                    $('#delete-file-input').attr('hidden', true)
+                } else {
+                    $(this).parent().remove();
+                }
+            } else {
+                $(this).parent().remove();
+            }
+        })
+
+        $('#form-add-issue').on('change', '.file-preview', function (event) {
+            let tes = $(this).val().split(".")
+            switch (tes.pop()) {
+                case "jpg":
+                case "png":
+                case "svg":
+
+                    var reader = new FileReader();
+                    reader.onload = function () {
+                        $(`#img${idFile}`).attr("src", reader.result)
+                    }
+
+                    let idFile = $(this).attr('data-id')
+
+                    if (idFile == "0") {
+                        $('#delete-file-input').attr('hidden', false)
+                    }
+
+                    let idImgOne = $(this).parent().prev().attr('data-id')
+                    if (idImgOne == "img-preview") {
+                        $(this).parent().prev().html(`
+                    <div data-id="img-preview"><img id="img${idFile}" src="" alt="your image" class="mb-2" style="max-width:100px;" /></div>
+                    `)
+                    } else {
+                        $(this).parent().before(`
+                    <div data-id="img-preview"><img id="img${idFile}" src="" alt="your image" class="mb-2" style="max-width:100px;" /></div>
+                    `)
+                    }
+                    reader.readAsDataURL(event.target.files[0]);
+                    break;
+                default:
+                    break;
+            }
+        })
+    </script>
+    <% include ../../partial/footer.ejs %>

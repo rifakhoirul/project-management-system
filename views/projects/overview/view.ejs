@@ -1,0 +1,36 @@
+<% include ../../partial/header.ejs %>
+    <div class="container-fluid" style="padding-top: 56px">
+        <div class="row">
+            <% include ../../partial/sidebar.ejs %>
+                <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+                    <div
+                        class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                        <h1 class="h2">Overview</h1>
+                    </div>
+                    <h3 class="mt-4 mb-3">Library System</h3>
+                    <div class="kotak-content-overview" style="max-width: 1800px;">
+                        <div class="issue-title">Issue tracking</div>
+                        <ul>
+                            <li>Bug: <%=bugOpen%> Open / <%=bugTotal%>
+                            </li>
+                            <li>Feature: <%=featureOpen%> Open / <%=featureTotal%>
+                            </li>
+                            <li>Support: <%=supportOpen%> Open / <%=supportTotal%>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="kotak-content-overview" style="max-width: 1800px;">
+                        <div class="members-title">Members</div>
+                        <ul>
+                            <% members.forEach((item, index)=>{ %>
+                                <li>
+                                    <%= item.firstname %>
+                                </li>
+                                <% }) %>
+                        </ul>
+                    </div>
+                </main>
+        </div>
+    </div>
+
+    <% include ../../partial/footer.ejs %>

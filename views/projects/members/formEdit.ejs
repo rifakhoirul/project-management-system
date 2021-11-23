@@ -1,0 +1,33 @@
+<% include ../../partial/header.ejs %>
+    <div class="container-fluid" style="padding-top: 56px">
+        <div class="row">
+            <% include ../../partial/sidebar.ejs %>
+                <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+                    <div
+                        class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                        <h1 class="h2"><a href="/projects/members/<%=projectid%>"><i class="fas fa-arrow-circle-left" ></i></a> Edit Member</h1>
+                    </div>
+                    <h3 class="mt-4 mb-3"></h3>
+                    <form action="" method="POST">
+                        <div class="containerCheck">
+                            <label style="width: 168px;">Member</label>
+                            <select class="form-control" id="member" name="member" disabled>
+                                <option value="<%=member.userid%>" selected><%= member.firstname %></option>
+                            </select>
+                        </div>
+                        <div class="containerCheck">
+                            <label style="width: 168px;">Position</label>
+                            <select class="form-control" id="position" name="position">
+                                <option value="" disabled selected>Choose the position ...</option>
+                                    <option value="Manager" <%= member.position=='Manager' ? 'selected':''%>>Manager</option>
+                                    <option value="Software Developer" <%= member.position=='Software Developer' ? 'selected':''%>>Software Developer</option>
+                                    <option value="Quality Assurance" <%= member.position=='Quality Assurance' ? 'selected':''%>>Quality Assurance</option>
+                            </select>
+                        </div>
+                        <p></p>
+                        <button type="submit" class="btn btn-primary" id="search"><i class="fas fa-save"></i> Save</button>
+                    </form>
+                </main>
+        </div>
+    </div>
+    <% include ../../partial/footer.ejs %>

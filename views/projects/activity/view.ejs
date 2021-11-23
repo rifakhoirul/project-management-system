@@ -1,0 +1,32 @@
+<% include ../../partial/header.ejs %>
+    <div class="container-fluid" style="padding-top: 56px">
+        <div class="row">
+            <% include ../../partial/sidebar.ejs %>
+                <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+                    <div
+                        class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                        <h1 class="h2">Activity</h1>
+                    </div>
+                    <div class="kotak-content-overview" style="max-width: 1200px; ">
+                        <div><strong>Activity</strong></div>
+                        <div>From <%= pastWeek %> to <%= today %>
+                        </div><br>
+                        <%for (const key in groupActivity) {%>
+                            <%= key==daytoday ? 'Today' :key %>
+                                <ul>
+                                    <% groupActivity[key].forEach(element=> { %>
+                                        <li>
+                                            <%= element.hour %> <a
+                                                    href='/projects/issues/<%= projectid %>/edit/<%= element.issueid %>' style="text-decoration: none;">#<%= element.issueid %></a>
+                                                <%= element.title %>: <%= element.description %>, Author: <%=
+                                                            element.firstname %>
+                                        </li>
+                                        <% }); %>
+                                </ul>
+                                <% } %>
+
+                    </div>
+                </main>
+        </div>
+    </div>
+    <% include ../../partial/footer.ejs %>

@@ -1,0 +1,25 @@
+<nav class="col-md-2 bg-light" style="padding-top: 15px;">
+    <ul class="nav flex-column">
+        <li class="nav-item">
+            <a class="nav-link <%= sidebar=='overview' ? 'selectedSidebar' : ''%>"
+                href="/projects/overview/<%= projectid %>">
+                Overview
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link <%= sidebar=='activity' ? 'selectedSidebar' : ''%>" href="/projects/activity/<%= projectid %>">
+                Activity
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link <%= sidebar=='members' ? 'selectedSidebar' : ''%>" href="/projects/members/<%= projectid %>">
+                Members
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link <%= sidebar=='issues' ? 'selectedSidebar' : ''%>" href="/projects/issues/<%= projectid %>">
+                Issues
+            </a>
+        </li>
+    </ul>
+</nav>

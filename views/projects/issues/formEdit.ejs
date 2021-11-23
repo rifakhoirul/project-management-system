@@ -1,0 +1,363 @@
+<% include ../../partial/header.ejs %>
+    <div class="container-fluid" style="padding-top: 56px">
+        <div class="row">
+            <% include ../../partial/sidebar.ejs %>
+                <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+                    <div
+                        class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                        <h1 class="h2"><a href="/projects/issues/<%= projectid %>"><i
+                                    class="fas fa-arrow-circle-left"></i></a> Edit Issue</h1>
+                    </div>
+                    <div class="border rounded p-3" style="max-width: 1200px; margin-bottom: 30px;">
+                        <form id="form-edit-issue" action="/projects/issues/<%=projectid%>/edit/<%=issueid%>"
+                            method="POST" encType="multipart/form-data" style="padding:20px 20px;">
+                            <div class="row mb-3 align-items-center">
+                                <label for="issueid" class="col-sm-2 col-form-label">Issue ID</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="issueid" name="issueid"
+                                        placeholder="issueid" value="<%= issueid %>" disabled>
+                                </div>
+                            </div>
+                            <div class="row mb-3 align-items-center">
+                                <label for="projectid" class="col-sm-2 col-form-label">Project ID</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="projectid" name="projectid"
+                                        placeholder="projectid" value="<%= projectid %>" disabled>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <legend class="col-form-label col-sm-2 pt-0">Tracker</legend>
+                                <div class="col-sm-10">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="tracker" id="Bug" value="Bug"
+                                            <%=issue.tracker=="Bug" ? "checked" :""%>>
+                                        <label class="form-check-label" for="Bug">
+                                            Bug
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="tracker" id="Feature"
+                                            value="Feature" <%=issue.tracker=="Feature" ? "checked" :""%>>
+                                        <label class="form-check-label" for="Feature">
+                                            Feature
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="tracker" id="Support"
+                                            value="Support" <%=issue.tracker=="Support" ? "checked" :""%>>
+                                        <label class="form-check-label" for="Support">
+                                            Support
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mb-3 align-items-center">
+                                <label for="subject" class="col-sm-2 col-form-label">Subject</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="subject" name="subject"
+                                        placeholder="Subject" value="<%= issue.subject%>">
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <label for="description" class="col-sm-2 col-form-label">Description</label>
+                                <div class="col-sm-9">
+                                    <textarea type="text" class="form-control" id="description" name="description"
+                                        placeholder="Description"><%= issue.description%></textarea>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <legend class="col-form-label col-sm-2 pt-0">Status</legend>
+                                <div class="col-sm-10">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="status" id="New" value="New"
+                                            <%=issue.status=="New" ? "checked" :""%>>
+                                        <label class="form-check-label" for="New">
+                                            New
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="status" id="Progress"
+                                            value="In Progress" <%=issue.status=="In Progress" ? "checked" :""%>>
+                                        <label class="form-check-label" for="Progress">
+                                            In Progress
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="status" id="Resolved"
+                                            value="Resolved" <%=issue.status=="Resolved" ? "checked" :""%>>
+                                        <label class="form-check-label" for="Resolved">
+                                            Resolved
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="status" id="Feedback"
+                                            value="Feedback" <%=issue.status=="Feedback" ? "checked" :""%>>
+                                        <label class="form-check-label" for="Feedback">
+                                            Feedback
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="status" id="Closed"
+                                            value="Closed" <%=issue.status=="Closed" ? "checked" :""%>>
+                                        <label class="form-check-label" for="Closed">
+                                            Closed
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="status" id="Rejected"
+                                            value="Rejected" <%=issue.status=="Rejected" ? "checked" :""%>>
+                                        <label class="form-check-label" for="Rejected">
+                                            Rejected
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <legend class="col-form-label col-sm-2 pt-0">Priority</legend>
+                                <div class="col-sm-10">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="priority" id="Normal"
+                                            value="Normal" <%=issue.priority=="Normal" ? "checked" :""%>>
+                                        <label class="form-check-label" for="Normal">
+                                            Normal
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="priority" id="High"
+                                            value="High" <%=issue.priority=="High" ? "checked" :""%>>
+                                        <label class="form-check-label" for="High">
+                                            High
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="priority" id="Urgent"
+                                            value="Urgent" <%=issue.priority=="Urgent" ? "checked" :""%>>
+                                        <label class="form-check-label" for="Urgent">
+                                            Urgent
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="priority" id="Immediate"
+                                            value="Immediate" <%=issue.priority=="Immediate" ? "checked" :""%>>
+                                        <label class="form-check-label" for="Immediate">
+                                            Immediate
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mb-3 align-items-center">
+                                <label for="assignee" class="col-sm-2 col-form-label">Assignee</label>
+                                <div class="col-sm-9">
+                                    <select class="form-control" id="assignee" name="assignee">
+                                        <option value="" disabled>Choose the assignee ...</option>
+                                        <% members.forEach((item, index)=>{ %>
+                                            <option value="<%= item.userid %>" <%=item.userid==issue.assignee
+                                                ? "selected" :""%>>
+                                                <%= item.firstname %>
+                                            </option>
+                                            <% }) %>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row mb-3 align-items-center">
+                                <label for="startdate" class="col-sm-2 col-form-label">Start Date</label>
+                                <div class="col-sm-10">
+                                    <input class="form-control" placeholder="Start date" type="text"
+                                        onfocus="(this.type='date')" id="startdate" name="startdate"
+                                        value="<%=issue.startdate.toLocaleString()%>">
+                                </div>
+                            </div>
+                            <div class="row mb-3 align-items-center">
+                                <label for="duedate" class="col-sm-2 col-form-label">Due Date</label>
+                                <div class="col-sm-10">
+                                    <input class="form-control" placeholder="Due date" type="text"
+                                        onfocus="(this.type='date')" id="duedate" name="duedate"
+                                        value="<%=issue.duedate.toLocaleString()%>">
+                                </div>
+                            </div>
+                            <div class="row mb-3 align-items-center">
+                                <label for="estimatedtime" class="col-sm-2 col-form-label">Estimated Time</label>
+                                <div class="col-sm-10">
+                                    <input type="number" step="any" class="form-control" id="estimatedtime"
+                                        name="estimatedtime" placeholder="Estimated Time"
+                                        value="<%=issue.estimatedtime%>">
+                                </div>
+                            </div>
+                            <div class="row mb-3 align-items-center">
+                                <label for="spenttime" class="col-sm-2 col-form-label">Spent Time</label>
+                                <div class="col-sm-10">
+                                    <input type="number" step="any" class="form-control" id="spenttime" name="spenttime"
+                                        placeholder="Spent Time" value=<%=issue.spenttime ? issue.spenttime:''%>>
+                                </div>
+                            </div>
+                            <div class="row mb-3 align-items-center">
+                                <label for="targetversion" class="col-sm-2 col-form-label">Target Version</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="targetversion" name="targetversion"
+                                        placeholder="Target Version"
+                                        value="<%= issue.targetversion ? issue.targetversion:''%>">
+                                </div>
+                            </div>
+                            <div class="row mb-3 align-items-center">
+                                <label for="targetversion" class="col-sm-2 col-form-label">Author</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="author" name="targetversion"
+                                        placeholder="Author" value="<%= author ? author:''%>" disabled>
+                                </div>
+                            </div>
+                            <div class="row mb-3 align-items-center">
+                                <label for="createddate" class="col-sm-2 col-form-label">Created Date</label>
+                                <div class="col-sm-10">
+                                    <input class="form-control" placeholder="Created Date" type="text" id="createddate"
+                                        name="createddate" value="<%=issue.createddate%>" disabled>
+                                </div>
+                            </div>
+                            <div class="row mb-3 align-items-center">
+                                <label for="updateddate" class="col-sm-2 col-form-label">Updated Date</label>
+                                <div class="col-sm-10">
+                                    <input class="form-control" placeholder="Updated Date" type="text" id="updateddate"
+                                        name="updateddate" value="<%=issue.updateddate%>" disabled>
+                                </div>
+                            </div>
+                            <div class="row mb-3 align-items-center">
+                                <label for="closeddate" class="col-sm-2 col-form-label">Closed Date</label>
+                                <div class="col-sm-10">
+                                    <input class="form-control" placeholder="-" type="text" id="closeddate"
+                                        name="closeddate" value="<%=issue.closeddate%>" disabled>
+                                </div>
+                            </div>
+                            <div class="row mb-3 align-items-center">
+                                <label for="done" class="col-sm-2 col-form-label">Parent Task</label>
+                                <div class="col-sm-9">
+                                    <select class="form-control" id="parenttask" name="parenttask">
+                                        <option value="" selected disabled>Choose the parent task ...</option>
+                                        <% parentTask.forEach((item, index)=>{ %>
+                                            <option value="<%= item.issueid %>" <%=item.issueid==issue.parenttask
+                                                ? "selected" :""%>>
+                                                <%= item.subject %>
+                                            </option>
+                                            <% }) %>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row mb-3 align-items-center">
+                                <label for="done" class="col-sm-2 col-form-label">% Done</label>
+                                <div class="col-sm-9">
+                                    <select class="form-control" id="done" name="done">
+                                        <option value="0" <%=issue.done==0 ? "selected" :"" %>>0</option>
+                                        <option value="10" <%=issue.done==10 ? "selected" :"" %>>10</option>
+                                        <option value="20" <%=issue.done==20 ? "selected" :"" %>>20</option>
+                                        <option value="30" <%=issue.done==30 ? "selected" :"" %>>30</option>
+                                        <option value="40" <%=issue.done==40 ? "selected" :"" %>>40</option>
+                                        <option value="50" <%=issue.done==50 ? "selected" :"" %>>50</option>
+                                        <option value="60" <%=issue.done==60 ? "selected" :"" %>>60</option>
+                                        <option value="70" <%=issue.done==70 ? "selected" :"" %>>70</option>
+                                        <option value="80" <%=issue.done==80 ? "selected" :"" %>>80</option>
+                                        <option value="90" <%=issue.done==90 ? "selected" :"" %>>90</option>
+                                        <option value="100" <%=issue.done==100 ? "selected" :"" %>>100</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-sm-2">
+                                    <label for="files" class="col-form-label">Files</label>
+                                </div>
+                                <div class="col-sm-9">
+                                    <% if(files){files.forEach((item,index)=> { %>
+                                        <div class="mb-3 d-flex file-input">
+                                            <input type="hidden" data-deleted="" name="oldfile"
+                                                value="<%=item.name%>,<%=item.type%>,<%=item.location%>">
+                                            <div class="d-flex">
+                                                <img data-tag="img" data-id="oldimg0" style="max-width: 100px;"
+                                                    src="<%=item.location%>" alt="<%=item.name%>">
+                                                <button type="button"
+                                                    class="btn btn-outline-danger mx-3 align-self-end delete-old-file">x</button>
+                                            </div>
+                                        </div>
+                                        <% })} %>
+                                            <div class="mb-3 d-flex file-input">
+                                                <input type="file" data-id="0" id="files0" name="files0"
+                                                    class="form-control file-preview" placeholder="Files">
+                                                <button type="button"
+                                                    class="btn btn-outline-danger ms-3 delete-file-input">-</button>
+                                            </div>
+                                            <p></p>
+
+                                            <button id="edit-file-form" type="button"
+                                                class="btn btn-outline-primary">+</button>
+                                </div>
+                            </div>
+                            <p></p>
+
+                            <button type="submit" class="btn btn-primary" id="search"><i class="fas fa-save"></i>
+                                Update</button>
+                        </form>
+                        <br>
+                    </div>
+                </main>
+        </div>
+    </div>
+    <script>
+        let countFileInput = 1;
+        $("#form-edit-issue").on('click', '#edit-file-form', function (event) {
+            event.preventDefault()
+            $('#edit-file-form').before(`
+            <div class="mb-3 d-flex file-input">
+                <input type="file" data-id="${countFileInput}" id="files${countFileInput}" name="files${countFileInput}" class="form-control file-preview" placeholder="Files">
+                <button type="button" class="btn btn-outline-danger ms-3 delete-file-input">-</button>
+                </div>
+            `)
+            countFileInput++
+        })
+
+        $('#form-edit-issue').on('change', '.file-preview', function (event) {
+            let tes = $(this).val().split(".")
+            switch (tes.pop()) {
+                case "jpg":
+                case "png":
+                case "svg":
+
+                    var reader = new FileReader();
+                    reader.onload = function () {
+                        $(`#img${idFile}`).attr("src", reader.result)
+                        return false;
+                    }
+
+                    let idFile = $(this).attr('data-id')
+
+                    let idImgOne = $(this).parent().prev().attr('data-id')
+                    if (idImgOne == "img-preview") {
+                        $(this).parent().prev().html(`
+                    <div data-id="img-preview"><img id="img${idFile}" src="" alt="your image" class="mb-2" style="max-width:100px;" /></div>
+                    `)
+                    } else {
+                        $(this).parent().before(`
+                    <div data-id="img-preview"><img id="img${idFile}" src="" alt="your image" class="mb-2" style="max-width:100px;" /></div>
+                    `)
+                    }
+                    reader.readAsDataURL(event.target.files[0]);
+                    break;
+                default:
+                    break;
+            }
+        })
+        $("#form-edit-issue").on('click', '.delete-old-file', function (event) {
+            val = $(this).parent().prev().val()
+            $(this).parent().prev().replaceWith(`<input type="hidden" name="oldfiledeleted" value="${val}">`)
+            $(this).parent().remove();
+        })
+
+        $("#form-edit-issue").on('click', '.delete-file-input', function (event) {
+            event.preventDefault()
+
+            let idFile = $(this).parent().prev().attr('data-id')
+            let firstInput = $(this).prev().attr('data-id')
+
+            if (idFile == "img-preview") {
+                $(this).parent().prev().remove();
+            } 
+            $(this).parent().remove();
+        })
+    </script>
+    <% include ../../partial/footer.ejs %>
